@@ -72,4 +72,20 @@ public class Program
 		assert pDay != null;
 		return aShows[pDay.ordinal()].clone();
 	}
+	
+	/**
+	 * Exercise 6:
+	 * A factory method for reset-and-add command.
+	 * @param pShow	The show to add
+	 * @param pDay	The day which pShow is added to
+	 */
+	public void resetAndAdd(Show pShow, Day pDay)
+	{
+		assert pShow != null && pDay != null;
+		Command command = new CompositeCommand( 
+				() -> Arrays.fill(aShows, NullShow.DEFAULT),
+				() -> aShows[pDay.ordinal()] = pShow.clone());
+		aCommands.add(command);
+		command.execute();
+	}
 }

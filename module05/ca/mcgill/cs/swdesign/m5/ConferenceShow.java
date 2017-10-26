@@ -27,11 +27,28 @@ public class ConferenceShow implements Show
 	/* (non-Javadoc)
 	 * Perform a deep copy of the object, resulting in a distinct object graph.
 	 * @see java.lang.Object#clone()
+	 * 
+	 * Here, a deep copy of the object is required, 
+	 * otherwise there would be two distinct decorators decorating the same object.
+	 * To achieve multi-decoration, the proper way is to nest decorators.
+	 */
+	/**
+	 * Returns a deep copy of implicitly parameterized ConferenceShow object.
 	 */
 	@Override
 	public ConferenceShow clone()
 	{
-		return null; // TODO Implementation left as an exercise.
+		try
+		{
+			ConferenceShow clone = (ConferenceShow) super.clone();
+			// Nest decorators
+			clone.aDecorated = this.aDecorated.clone();
+			return clone;
+		}
+		catch (CloneNotSupportedException e)
+		{
+			return null;
+		}
 	}
 	
 	@Override
