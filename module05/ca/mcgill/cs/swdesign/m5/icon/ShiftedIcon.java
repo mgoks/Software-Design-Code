@@ -18,8 +18,8 @@ public class ShiftedIcon implements Icon
 	/**
 	 * Constructor.
 	 * @param pIcon	the icon to be shifted
-	 * @param pX		the magnitude of the shift on the x-axis
-	 * @param pY		the magnitude of the shift on the y-axis
+	 * @param pX	the magnitude of the shift on the x-axis
+	 * @param pY	the magnitude of the shift on the y-axis
 	 */
 	public ShiftedIcon(Icon pIcon, int pX, int pY)
 	{
@@ -27,19 +27,12 @@ public class ShiftedIcon implements Icon
 		aX = pX;
 		aY = pY;
 	}
-	
-	
-	public void setShift( int pX, int pY )
-	{
-		
-	}
 
 	@Override
 	public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
 	{
-		// Decoration
-		
-		aIcon.paintIcon(pComponent, pGraphics, pX, pY);
+		// aIcon is decorated by shifting it by aX in x-axis and aY in y-axis
+		aIcon.paintIcon(pComponent, pGraphics, pX + aX, pY + aY);
 	}
 
 	@Override
@@ -52,5 +45,21 @@ public class ShiftedIcon implements Icon
 	public int getIconHeight()
 	{
 		return aIcon.getIconHeight();
+	}
+	
+	/**
+	 * @return	shift in X-axis
+	 */
+	public int getShiftInX()
+	{
+		return aX;
+	}
+	
+	/**
+	 * @return	shift in Y-axis
+	 */
+	public int getShiftInY()
+	{
+		return aY;
 	}
 }

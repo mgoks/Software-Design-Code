@@ -1,6 +1,5 @@
 package ca.mcgill.cs.swdesign.m5.icon;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
