@@ -8,70 +8,49 @@ import java.util.List;
 import javax.swing.Icon;
 
 /**
- * A CompositeIcon object can contain multiple ShiftedIcons.
+ * A CompositeIcon object can contain multiple icons.
  * Aggregates ShiftedIcon
  */
 public class CompositeIcon implements Icon
 {
-	private List<ShiftedIcon> aIcons = new ArrayList<>();
-	
-	/**
-	 * Constructor.
-	 */
-	public CompositeIcon()
-	{}
+	private List<Icon> aIcons;
 	
 	/**
 	 * 
-	 * @param pIcon		icon to be added to the CompositeIcon object
-	 * @param pShiftX	magnitude of shift in x-axis
-	 * @param pShiftY	magnitude of shift in y-axis
+	 * @param pIcons	list of icons to compose
 	 */
-	public void add(Icon pIcon, int pShiftX, int pShiftY)
+	public CompositeIcon(Icon...pIcons)
 	{
-		aIcons.add(new ShiftedIcon(pIcon, pShiftX, pShiftY));
+		aIcons = new ArrayList<>();
+		int aXOffset = 0;
+		for( Icon icon : pIcons )
+		{
+			// Icons will be drawn next to each other
+			aIcons.add(new ShiftedIcon(icon, aXOffset, 0));
+			aXOffset += icon.getIconWidth();
+		}
 	}
-	
-	/**
-	 * @param pIcon		icon to be removed
-	 */
-	public void remove( Icon pIcon )
-	{
-		aIcons.remove(pIcon);
-	}
-	
+
 	@Override
-	public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
+	public void paintIcon(Component pC, Graphics pG, int pX, int pY)
 	{
-		int aX = 0; 
-		int aY = 0;
 		for( Icon icon : aIcons )
 		{
-			icon.paintIcon(pComponent, pGraphics, aX, aY);
-			aX = icon.getIconWidth();
-			aY = icon.getIconHeight();
+			icon.paintIcon(pC, pG, pX, pY);
 		}
 	}
 
 	@Override
 	public int getIconWidth()
 	{
-		int aCompositeIconWidth = 0;
-		for( Icon icon : aIcons )
-		{
-			aCompositeIconWidth += icon.getIconWidth();
-		}
-		return aCompositeIconWidth;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int getIconHeight()
 	{
-		int aCompositeHeight = 0;
-		for( Icon icon : aIcons )
-		{
-			aCompositeHeight += icon.getIconHeight();
-		}
-		return aCompositeHeight;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
