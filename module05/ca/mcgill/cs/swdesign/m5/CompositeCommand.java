@@ -31,5 +31,4 @@ public class CompositeCommand implements Command
 			command.execute();
 		}
 	}
-
 }

@@ -43,6 +43,8 @@ public class Program
 	{
 		assert pShow != null && pDay != null;
 		Command command = () -> aShows[pDay.ordinal()] = pShow.clone();
+		// To log this command, wrap it as follows:
+		command = new LoggedCommand( () -> aShows[pDay.ordinal()] = pShow.clone(), "ADD");
 		aCommands.add(command);
 		command.execute();
 	}
