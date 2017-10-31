@@ -12,27 +12,26 @@ import javax.swing.Icon;
 public class ShiftedIcon implements Icon
 {
 	private final Icon aIcon;
-	private final int aX;
-	private final int aY;
+	private final int aShiftInX;
+	private final int aShiftInY;
 	
 	/**
-	 * Constructor.
-	 * @param pIcon	the icon to be shifted
-	 * @param pX	the magnitude of the shift on the x-axis
-	 * @param pY	the magnitude of the shift on the y-axis
+	 * 
+	 * @param pIcon	Icon object, probably a ImageIcon
+	 * @param pX	offset in X-axis
+	 * @param pY	offset in Y-axis
 	 */
 	public ShiftedIcon(Icon pIcon, int pX, int pY)
 	{
 		aIcon = pIcon;
-		aX = pX;
-		aY = pY;
+		aShiftInX = pX;
+		aShiftInY = pY;
 	}
 
 	@Override
-	public void paintIcon(Component pComponent, Graphics pGraphics, int pX, int pY)
+	public void paintIcon(Component pC, Graphics pG, int pX, int pY)
 	{
-		// aIcon is decorated by shifting it by aX in x-axis and aY in y-axis
-		aIcon.paintIcon(pComponent, pGraphics, pX + aX, pY + aY);
+		aIcon.paintIcon(pC, pG, pX + aShiftInX, pY + aShiftInY);
 	}
 
 	@Override
@@ -45,21 +44,5 @@ public class ShiftedIcon implements Icon
 	public int getIconHeight()
 	{
 		return aIcon.getIconHeight();
-	}
-	
-	/**
-	 * @return	shift in X-axis
-	 */
-	public int getShiftInX()
-	{
-		return aX;
-	}
-	
-	/**
-	 * @return	shift in Y-axis
-	 */
-	public int getShiftInY()
-	{
-		return aY;
 	}
 }
