@@ -24,12 +24,12 @@ public class CompositeIcon implements Icon
 	/**
 	 * @param pIcons		list of icons to add to the CompositeIcon object
 	 */
-	public void addIcon(Icon...pIcons)
+	public void addIcon(Icon pIcons, int pShiftX, int pShiftY)
 	{
-		for( Icon icon : pIcons )
-		{
-			aIcons.add(icon);
-		}
+//		for( Icon icon : pIcons )
+//		{
+			aIcons.add(new ShiftedIcon(pIcons, pShiftX, pShiftY));
+//		}
 	}
 	
 	/**
