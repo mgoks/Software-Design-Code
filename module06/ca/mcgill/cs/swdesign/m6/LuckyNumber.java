@@ -44,9 +44,10 @@ public class LuckyNumber extends Application
     	Model model = new Model();
     	
     	GridPane root = createPane(); // The root of the GUI component graph
-    	root.add(new SliderPanel(model), 0, 0, 1, 1);
-    	root.add(new IntegerPanel(model), 0, 1, 1, 1);
-    	root.add(new TextPanel(model), 0, 2, 1, 1);
+    	root.add(new SliderPanel(model), 	0, 0, 1, 1);
+    	root.add(new IntegerPanel(model), 	0, 1, 1, 1);
+    	root.add(new TextPanel(model), 		0, 2, 1, 1);
+    	root.add(new RomanPanel(model), 	0, 3, 1, 1);
     	
     	pPrimaryStage.setTitle("Lucky Number");
     	pPrimaryStage.setResizable(false);
@@ -186,6 +187,58 @@ class TextPanel extends HBox implements Observer
 		aText.setText(LABELS[aModel.getNumber()]);
 		getChildren().add(aText);
 		
+		
+		aText.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent pEvent)
+			{
+				int lIndex = 0;
+				for( int i = 0; i < LABELS.length; i++)
+				{
+					if(aText.getText().equalsIgnoreCase(LABELS[i]))
+					{
+						lIndex = i;
+						break;
+					}
+				}
+				aModel.setNumber(lIndex);
+			}
+		});
+	}
+
+	@Override
+	public void newNumber(int pNumber)
+	{
+		aText.setText(LABELS[pNumber]);
+		
+	}
+}
+
+/**
+ * Exercise 1.
+ * Concrete observer that displays the data as written-out Roman numeral in a text field.
+ * @author Halil Murat
+ *
+ */
+class RomanPanel extends HBox implements Observer
+{
+	// Character 'N' representing zero
+	private static final String[] LABELS = {"N", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+	
+	private TextField aText = new TextField();
+	private Model aModel;
+	
+	/**
+	 * @param pModel The model observed by this panel.
+	 */
+	RomanPanel(Model pModel)
+	{
+		aModel = pModel;
+		aModel.addObserver(this);
+		aText.setMinWidth(LuckyNumber.WIDTH);
+		aText.setText(LABELS[aModel.getNumber()]);
+		getChildren().add(aText);
 		
 		aText.setOnAction(new EventHandler<ActionEvent>()
 		{
