@@ -187,7 +187,6 @@ class TextPanel extends HBox implements Observer
 		aText.setText(LABELS[aModel.getNumber()]);
 		getChildren().add(aText);
 		
-		
 		aText.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -263,7 +262,6 @@ class RomanPanel extends HBox implements Observer
 	public void newNumber(int pNumber)
 	{
 		aText.setText(LABELS[pNumber]);
-		
 	}
 }
 
