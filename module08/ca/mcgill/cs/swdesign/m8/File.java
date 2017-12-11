@@ -1,21 +1,14 @@
 package ca.mcgill.cs.swdesign.m8;
 
-/**
- * @author Halil Murat
- */
 public class File extends AbstractFile
 {
-	/**
-	 * @param pName		name of file
-	 * @param pLevel	level of file
-	 */
-	protected File(String pName, int pLevel)
+	public File(String pName)
 	{
-		super(pName, pLevel);
+		super(pName);
 	}
 
 	@Override
-	public void accept(FileSystemVisitor pVisitor)
+	public void accept(Visitor pVisitor)
 	{
 		pVisitor.visitFile(this);
 	}

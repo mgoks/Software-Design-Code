@@ -7,27 +7,19 @@ import java.util.Iterator;
  * Represents the inventory of a 
  * physical grocery store.
  */
-public class Inventory implements Iterable<Item>
+public class Inventory extends Identity implements Iterable<IItem>, IVisitable
 {
-	private final String aName; // Unique
-	private final HashMap<Item, Integer> aInventory = new HashMap<>();
+	private final HashMap<IItem, Integer> aInventory = new HashMap<>();
+	private ILogger aILogger = new ConsoleLogger();
 	
 	/**
 	 * Creates a new inventory with no items in it,
 	 * and identified uniquely with pName.
 	 * @param pName A unique identifier for this inventory.
 	 */
-	public Inventory(String pName)
+	protected Inventory(String pName)
 	{
-		aName = pName;
-	}
-	
-	/**
-	 * @return The unique name of this inventory.
-	 */
-	public String getName()
-	{
-		return aName;
+		super(pName);
 	}
 	
 	/**
@@ -35,7 +27,7 @@ public class Inventory implements Iterable<Item>
 	 * @param pItem The type of item to add.
 	 * @param pQuantity The amount to add.
 	 */
-	public void stock(Item pItem, int pQuantity)
+	public void stock(IItem pItem, int pQuantity)
 	{
 		int amount = 0;
 		if( aInventory.containsKey(pItem))
@@ -44,6 +36,8 @@ public class Inventory implements Iterable<Item>
 		}
 		amount += pQuantity;
 		aInventory.put(pItem, amount);
+		
+		notifyStockObservers(pItem, pQuantity);
 	}
 	
 	/**
@@ -54,18 +48,20 @@ public class Inventory implements Iterable<Item>
 	 * @param pQuantity The amount to dispose.
 	 * @pre aInventory.containsKey(pItem) && pQuantity >= aInventory.get(pItem)
 	 */
-	public void dispose(Item pItem, int pQuantity)
+	public void dispose(IItem pItem, int pQuantity)
 	{
 		int amount = aInventory.get(pItem);
 		amount -= pQuantity;
 		aInventory.put(pItem, amount);
+		
+		notifyDisposalObservers(pItem, pQuantity);
 	}
 	
 	/**
 	 * @param pItem The item to check for availability.
 	 * @return How many of the items are available in the inventory.
 	 */
-	public int available(Item pItem)
+	public int available(IItem pItem)
 	{
 		if( aInventory.containsKey(pItem))
 		{
@@ -78,8 +74,30 @@ public class Inventory implements Iterable<Item>
 	}
 
 	@Override
-	public Iterator<Item> iterator()
+	public Iterator<IItem> iterator()
 	{
 		return aInventory.keySet().iterator();
+	}
+	
+	private void notifyStockObservers(IItem pItem, int pQuantity)
+	{
+		for (int i = 0; i < pQuantity; i++)
+		{
+			aILogger.itemStocked(pItem);
+		}
+	}
+	
+	private void notifyDisposalObservers(IItem pItem, int pQuantity)
+	{
+		for (int i = 0; i < pQuantity; i++)
+		{
+			aILogger.itemDisposed(pItem);
+		}
+	}
+
+	@Override
+	public void accept(IVisitor pVisitor)
+	{
+		pVisitor.visitInventory(this);
 	}
 }

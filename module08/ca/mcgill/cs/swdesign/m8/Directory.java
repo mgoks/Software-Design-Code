@@ -1,39 +1,44 @@
 package ca.mcgill.cs.swdesign.m8;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-/**
- * @author Halil Murat
- */
 public class Directory extends AbstractFile
 {
-	private List<IFile> aIFiles;
+	private List<IFile> aChildren;
 	
-	/**
-	 * @param pName		name of the directory
-	 * @param pLevel	level of the directory
-	 * @param pFiles	child nodes of directory
-	 */
-	protected Directory(String pName, int pLevel, IFile...pFiles)
+	public Directory(String pName)
 	{
-		super(pName, pLevel);
-		aIFiles = new ArrayList<IFile>(pFiles.length);
-		aIFiles.addAll(Arrays.asList(pFiles));
+		super(pName);
+		aChildren = new ArrayList<IFile>();
 	}
 
 	@Override
-	public void accept(FileSystemVisitor pVisitor)
+	public void accept(Visitor pVisitor)
 	{
 		pVisitor.visitDirectory(this);
 	}
-
-	/**
-	 * @return	the list of files and sub-directories in this directory
-	 */
+	
+	public void addChild(IFile pChild)
+	{
+		aChildren.add(pChild);
+	}
+	
 	public List<IFile> getChildren()
 	{
-		return aIFiles;
+		return aChildren;
+	}
+	
+	public List<Directory> getSubDirs()
+	{
+		List<Directory> subDirs = new ArrayList<Directory>();
+		for (IFile iFile : aChildren)
+		{
+			if (iFile instanceof Directory)
+			{
+				subDirs.add((Directory) iFile);
+			}
+		}
+		return subDirs;
 	}
 }

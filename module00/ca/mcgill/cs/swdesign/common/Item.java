@@ -5,9 +5,8 @@ package ca.mcgill.cs.swdesign.common;
  * Jar of peanut butter, package of pasta,
  * whatever.
  */
-public class Item
+public class Item extends Identity implements IItem, IVisitable 
 {
-	private final String aName;
 	private final int aId;
 	private final int aPrice; // In cents: 100 = one dollar
 	
@@ -17,21 +16,14 @@ public class Item
 	 * @param pId A unique id for the item
 	 * @param pPrice The price of the item in cents
 	 */
-	public Item(String pName, int pId, int pPrice)
+	protected Item(String pName, int pId, int pPrice)
 	{
-		aName = pName;
+		super(pName);
 		aId = pId;
 		aPrice = pPrice;
 	}
 	
-	/**
-	 * @return The name of the item
-	 */
-	public String getName()
-	{
-		return aName;
-	}
-	
+
 	/**
 	 * @return The ID of the item.
 	 */
@@ -47,4 +39,11 @@ public class Item
 	{
 		return aPrice;
 	}
+
+	@Override
+	public void accept(IVisitor pVisitor)
+	{
+		pVisitor.visitItem(this);
+	}
+
 }

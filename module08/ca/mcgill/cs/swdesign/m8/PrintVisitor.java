@@ -1,49 +1,41 @@
 package ca.mcgill.cs.swdesign.m8;
 
-import java.util.List;
-
 /**
- * A concrete visitor that prints out the file hierarchy.
+ * Prints the file, symbolic link, or the directory it visits.
+ * Uses the Visitor Design Pattern.
  * @author Halil Murat
  */
-public class PrintVisitor implements FileSystemVisitor
+public class PrintVisitor implements Visitor
 {
+	private static final String TAB = "  ";
+	private static int depth		= 0;
+	
 	@Override
 	public void visitFile(File pFile)
 	{
-		for (int i = 0; i < pFile.getLevel(); i++)
-		{
-			System.out.print("  ");
-		}
 		System.out.println(pFile.getName());
-	}
-
-	@Override
-	public void visitDirectory(Directory pDirectory)
-	{
-		for (int i = 0; i < pDirectory.getLevel(); i++)
-		{
-			System.out.print("  ");
-		}
-		System.out.println(pDirectory.getName());
-		List<IFile> children = pDirectory.getChildren();
-		for (IFile file : children )
-		{
-			for (int i = 0; i < file.getLevel(); i++)
-			{
-				System.out.print("  ");
-			}
-			System.out.println(file.getName());
-		}
 	}
 
 	@Override
 	public void visitSymLink(SymLink pSymLink)
 	{
-		for (int i = 0; i < pSymLink.getLevel(); i++)
+		System.out.print(pSymLink.getName() + " - symlink to ");
+		pSymLink.getIFile().accept(this);
+	}
+
+	@Override
+	public void visitDirectory(Directory pDirectory)
+	{
+		System.out.println(pDirectory.getName());
+		depth++;
+		for (IFile child : pDirectory.getChildren())
 		{
-			System.out.print("  ");
+			for (int i = 0; i < depth; i++)
+			{
+				System.out.print(TAB);
+			}
+			child.accept(this);
 		}
-		System.out.println(pSymLink.getName());
+		depth--;
 	}
 }

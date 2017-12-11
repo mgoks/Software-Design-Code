@@ -1,27 +1,36 @@
 package ca.mcgill.cs.swdesign.m8;
 
-/**
- * @author Halil Murat
- */
-public class SymLink extends AbstractFile
+public class SymLink implements IFile
 {
 	private IFile aIFile;
+	private String aName;
 	
-	/**
-	 * @param pName		name of SymLink
-	 * @param pLevel	level of SymLink
-	 * @param pIFile	IFile this SymLink aggregates
-	 */
-	protected SymLink(String pName, int pLevel, IFile pIFile)
+	public SymLink(IFile pIFile, String pName)
 	{
-		super(pName, pLevel);
 		aIFile = pIFile;
+		aName  = pName;
 	}
 
 	@Override
-	public void accept(FileSystemVisitor pVisitor)
+	public void accept(Visitor pVisitor)
 	{
 		pVisitor.visitSymLink(this);
+//		aIFile.accept(pVisitor);
 	}
 
+	@Override
+	public String getName()
+	{
+		return aName;
+	}
+
+	public IFile getIFile()
+	{
+		return aIFile;
+	}
+	
+	public boolean isDirectory()
+	{
+		return aIFile instanceof Directory;
+	}
 }
